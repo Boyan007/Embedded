@@ -2,8 +2,6 @@
 #include "system_stm32f4xx.h"
 #include "Gpio.h"
 
-#define REG32(x) (*((uint32_t volatile*)(x)))
-
 #define RCC 									0x40023800 //0x40023800 - 0x400238FF
 #define RCC_AHB1ENR_OFFSET		0x00000030
 
@@ -47,11 +45,11 @@ int main()
 		{
 			i++;
 		}
-		TogglePin(GPIOD, 12);
+		TogglePinOutput(GPIOD, 12);
 		while(i>0)
 		{
 			i--;
 		}
-		TogglePin(GPIOD, 12);
+		TogglePinOutput(GPIOD, 12);
 	}
 }

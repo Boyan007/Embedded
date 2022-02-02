@@ -57,7 +57,7 @@
 #define TWO_BIT_FIELD					0x02
 #define FOUR_BIT_FIELD				0x02
 
-#define PIN_8									0x08
+#define PIN8									0x08
 
 typedef uint32_t pinNumber;
 
@@ -129,6 +129,25 @@ enum alternateFunction
 	AF3												= 0x03,
 };
 
+enum pins
+{
+	PIN_1											= 0x01,
+	PIN_2											= 0x02,
+	PIN_3											= 0x04,
+	PIN_4											= 0x08,
+	PIN_5											= 0x10,
+	PIN_6											= 0x20,
+	PIN_7											= 0x40,
+	PIN_8											= 0x80,
+	PIN_9											= 0x100,
+	PIN_10										= 0x200,
+	PIN_11										= 0x400,
+	PIN_12										= 0x800,
+	PIN_13										= 0x1000,
+	PIN_14										= 0x2000,
+	PIN_15										= 0x4000
+};
+
 typedef enum{
 	GPIOA,
 	GPIOB,
@@ -140,8 +159,8 @@ typedef enum{
 
 void SetUpGPIO(GpioStructure* gpio, gpioPorts port);
 
-void SetPin(gpioPorts port, pinNumber pin);
-void ResetPin(gpioPorts port, pinNumber pin);
-void TogglePin(gpioPorts port, pinNumber pin);
+void SetPinOutput(gpioPorts port, pinNumber pin);
+void ResetPinOutput(gpioPorts port, pinNumber pin);
+void TogglePinOutput(gpioPorts port, pinNumber pin);
 
 #endif
