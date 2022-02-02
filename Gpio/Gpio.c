@@ -2,18 +2,51 @@
 
 /* General function for setting a bitmask in a register, starting on bit position
 */
-static void SetRegister(uint32_t reg, uint32_t bit, uint32_t bitMask)
+static void SetBit(uint32_t reg, uint32_t bits, uint32_t bitMask)
 {
 	// somehow need to check the range !!!
-	REG32(reg) |= bitMask<<bit;
+	REG32(reg) |= bitMask<<bits;
 }
 
 /* General function for resetting a bitmask in a register, starting on bit position
 */
-static void ResetRegister(uint32_t reg, uint32_t bit, uint32_t bitMask)
+static void ResetBit(uint32_t reg, uint32_t bits, uint32_t bitMask)
 {
 	// somehow need to check the range !!!
-	REG32(reg) &= ~bitMask<<bit;
+	REG32(reg) &= ~bitMask<<bits;
+}
+
+
+/* General function for setting a bitmask in a register, for all bit positions
+*/
+static void SetRegister(uint32_t reg, uint32_t bits, uint32_t bitMask, uint8_t bitsInBitfield)
+{
+	uint32_t pinNumber = 0;
+	
+	while(pinNumber < 16)
+	{
+		if( bits & (1 << pinNumber) )
+		{
+			SetBit(reg, bitsInBitfield*pinNumber, bitMask);
+		}
+		pinNumber++;
+	}
+}
+
+/* General function for resetting bitmask in a register, for all bit positions
+*/
+static void ResetRegister(uint32_t reg, uint32_t bits, uint32_t bitMask, uint8_t bitsInBitfield)
+{
+	uint32_t pinNumber = 0;
+	
+	while(pinNumber < 16)
+	{
+		if( bits & (1 << pinNumber) )
+		{
+			ResetBit(reg, bitsInBitfield*pinNumber, bitMask);
+		}
+		pinNumber++;
+	}
 }
 
 // Somehow make an array of pointers to functions??? (to avoid repeating)
@@ -21,66 +54,66 @@ static void ResetRegister(uint32_t reg, uint32_t bit, uint32_t bitMask)
 */
 static void SetGpioMode(uint32_t reg_gpio, uint32_t pin, uint32_t mode)
 {
-	SetRegister(reg_gpio + GPIO_MODER_OFFSET, TWO_BIT_FIELD * pin, mode);
+	SetRegister(reg_gpio + GPIO_MODER_OFFSET, pin, mode, TWO_BIT_FIELD);
 }
 
 /* Function for resetting the mode of a GPIO
 */
 static void ResetGpioMode(uint32_t reg_gpio, uint32_t pin, uint32_t mode)
 {
-	ResetRegister(reg_gpio + GPIO_MODER_OFFSET, TWO_BIT_FIELD * pin, mode);
+	ResetRegister(reg_gpio + GPIO_MODER_OFFSET, pin, mode, TWO_BIT_FIELD);
 }
 
 /* Function for setting the output type of a GPIO: push-pull, open drain
 */
 static void SetGpioOType(uint32_t reg_gpio, uint32_t pin, uint32_t outputType)
 {
-	SetRegister(reg_gpio + GPIO_OTYPE_OFFSET, ONE_BIT_FIELD * pin, outputType);
+	SetRegister(reg_gpio + GPIO_OTYPE_OFFSET, pin, outputType, ONE_BIT_FIELD);
 }
 /* Function for resetting the output type of a GPIO
 */
 static void ResetGpioOType(uint32_t reg_gpio, uint32_t pin, uint32_t outputType)
 {
-	ResetRegister(reg_gpio + GPIO_OTYPE_OFFSET, ONE_BIT_FIELD * pin, outputType);
+	ResetRegister(reg_gpio + GPIO_OTYPE_OFFSET, pin, outputType, ONE_BIT_FIELD);
 }
 
 /* Function for setting speed of a GPIO: low, medium, high, very high
 */
 static void SetGpioSpeed(uint32_t reg_gpio, uint32_t pin, uint32_t speed)
 {
-	SetRegister(reg_gpio + GPIO_OSPEED_OFFSET, ONE_BIT_FIELD * pin, speed);
+	SetRegister(reg_gpio + GPIO_OSPEED_OFFSET, pin, speed, ONE_BIT_FIELD);
 }
 /* Function for resetting speed of a GPIO
 */
 static void ResetGpioSpeed(uint32_t reg_gpio, uint32_t pin, uint32_t speed)
 {
-	ResetRegister(reg_gpio + GPIO_OSPEED_OFFSET, ONE_BIT_FIELD * pin, speed);
+	ResetRegister(reg_gpio + GPIO_OSPEED_OFFSET, pin, speed, ONE_BIT_FIELD);
 }
 
 /* Function for setting pull-up and pull-down of a GPIO
 */
 static void SetGpioPuPd(uint32_t reg_gpio, uint32_t pin, uint32_t pUpPDown)
 {
-	SetRegister(reg_gpio + GPIO_PUPDR_OFFSET, ONE_BIT_FIELD * pin, pUpPDown);
+	SetRegister(reg_gpio + GPIO_PUPDR_OFFSET, pin, pUpPDown, ONE_BIT_FIELD);
 }
 /* Function for resetting pull-up and pull-down of a GPIO
 */
 static void ResetGpioPuPd(uint32_t reg_gpio, uint32_t pin, uint32_t pUpPDown)
 {
-	ResetRegister(reg_gpio + GPIO_PUPDR_OFFSET, ONE_BIT_FIELD * pin, pUpPDown);
+	ResetRegister(reg_gpio + GPIO_PUPDR_OFFSET, pin, pUpPDown, ONE_BIT_FIELD);
 }
 
 /* Function for locking a GPIO: no lock, lock
 */
 static void SetGpioLock(uint32_t reg_gpio, uint32_t pin, uint32_t lock)
 {
-	SetRegister(reg_gpio + GPIO_LCKR_OFFSET, ONE_BIT_FIELD * pin, lock);
+	SetRegister(reg_gpio + GPIO_LCKR_OFFSET, pin, lock, ONE_BIT_FIELD);
 }
 /* Function for reseting lock a GPIO
 */
 static void ResetGpioLock(uint32_t reg_gpio, uint32_t pin, uint32_t lock)
 {
-	ResetRegister(reg_gpio + GPIO_LCKR_OFFSET, ONE_BIT_FIELD * pin, lock);
+	ResetRegister(reg_gpio + GPIO_LCKR_OFFSET, pin, lock, ONE_BIT_FIELD);
 }
 
 /* Function for setting alternate function of a GPIO: AF0, AF1, AF2, AF3
@@ -89,12 +122,12 @@ static void SetGpioAF(uint32_t reg_gpio, uint32_t pin, uint32_t* altFunc)
 {
 	if(pin < PIN8)
 	{
-		SetRegister(reg_gpio + GPIO_AFLR_OFFSET, FOUR_BIT_FIELD * pin, altFunc[0]);
+		SetRegister(reg_gpio + GPIO_AFLR_OFFSET, pin, altFunc[0], FOUR_BIT_FIELD);
 	}
 	else
 	{
 		pin %= PIN8;
-		SetRegister(reg_gpio + GPIO_AFHR_OFFSET, FOUR_BIT_FIELD * pin, altFunc[1]);
+		SetRegister(reg_gpio + GPIO_AFHR_OFFSET, pin, altFunc[1], FOUR_BIT_FIELD);
 	}
 }
 /* Function for resetting alternate function of a GPIO
@@ -103,12 +136,12 @@ static void ResetGpioAF(uint32_t reg_gpio, uint32_t pin, uint32_t* altFunc)
 {
 	if(pin < PIN8)
 	{
-		ResetRegister(reg_gpio + GPIO_AFLR_OFFSET, FOUR_BIT_FIELD * pin, altFunc[0]);
+		ResetRegister(reg_gpio + GPIO_AFLR_OFFSET, pin, altFunc[0], FOUR_BIT_FIELD);
 	}
 	else
 	{
 		pin %= PIN8;
-		ResetRegister(reg_gpio + GPIO_AFHR_OFFSET, FOUR_BIT_FIELD * pin, altFunc[1]);
+		ResetRegister(reg_gpio + GPIO_AFHR_OFFSET, pin, altFunc[1], FOUR_BIT_FIELD);
 	}
 }
 
@@ -143,11 +176,11 @@ static void GetGpioReg(uint32_t* regValue, gpioPorts port)
 	}
 }
 
-/* Function for resetting up GPIO pin with given parameters and port
+/* Function for resetting GPIO pin configuration
 */
 static void ResetGPIO( GpioStructure* gpio, uint32_t reg_gpio, uint32_t pin)
 {
-	// think of a way to set up multiple pins
+
 	ResetGpioMode(reg_gpio, pin, gpio->mode);
 	ResetGpioOType(reg_gpio, pin, gpio->outputType);
 	ResetGpioSpeed(reg_gpio, pin, gpio->speed);

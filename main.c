@@ -34,10 +34,10 @@ int main()
 	gpioStructure.outputData = OUTPUT;
 	gpioStructure.AF[0] = AF0;
 	gpioStructure.AF[1] = AF0;
-	gpioStructure.pin = 12;
+	gpioStructure.pin = PIN_12 | PIN_14;
 	
 	SetUpGPIO(&gpioStructure, GPIOD);
-	
+	int j = 0; 
 	while(1)
 	{
 		
@@ -45,11 +45,28 @@ int main()
 		{
 			i++;
 		}
-		TogglePinOutput(GPIOD, 12);
+		if(j%2 == 0)
+		{
+			TogglePinOutput(GPIOD, 14);
+		}
+		else
+		{
+			TogglePinOutput(GPIOD, 12);
+		}
+		
 		while(i>0)
 		{
 			i--;
 		}
-		TogglePinOutput(GPIOD, 12);
+		if(j%2 == 0)
+		{
+			TogglePinOutput(GPIOD, 14);
+		}
+		else
+		{
+			TogglePinOutput(GPIOD, 12);
+		}
+		
+		j++;
 	}
 }

@@ -129,23 +129,24 @@ enum alternateFunction
 	AF3												= 0x03,
 };
 
-enum pins
+enum pins // atart from here, how to set up multiple pins at once
 {
-	PIN_1											= 0x01,
-	PIN_2											= 0x02,
-	PIN_3											= 0x04,
-	PIN_4											= 0x08,
-	PIN_5											= 0x10,
-	PIN_6											= 0x20,
-	PIN_7											= 0x40,
-	PIN_8											= 0x80,
-	PIN_9											= 0x100,
-	PIN_10										= 0x200,
-	PIN_11										= 0x400,
-	PIN_12										= 0x800,
-	PIN_13										= 0x1000,
-	PIN_14										= 0x2000,
-	PIN_15										= 0x4000
+	PIN_0											= 0x01,
+	PIN_1											= 0x02,
+	PIN_2											= 0x04,
+	PIN_3											= 0x08,
+	PIN_4											= 0x10,
+	PIN_5											= 0x20,
+	PIN_6											= 0x40,
+	PIN_7											= 0x80,
+	PIN_8											= 0x100,
+	PIN_9											= 0x200,
+	PIN_10										= 0x400,
+	PIN_11										= 0x800,
+	PIN_12										= 0x1000,
+	PIN_13										= 0x2000,
+	PIN_14										= 0x4000,
+	PIN_15										= 0x8000
 };
 
 typedef enum{
