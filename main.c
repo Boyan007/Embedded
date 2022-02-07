@@ -2,15 +2,15 @@
 #include "system_stm32f4xx.h"
 #include "Gpio.h"
 
-#define RCC 									0x40023800 //0x40023800 - 0x400238FF
-#define RCC_AHB1ENR_OFFSET		0x00000030
+#define RCC                   0x40023800 //0x40023800 - 0x400238FF
+#define RCC_AHB1ENR_OFFSET    0x00000030
 
-#define RCC_AHB1ENR_A					0x00000001
-#define RCC_AHB1ENR_B					0x00000002
-#define RCC_AHB1ENR_C					0x00000004
-#define RCC_AHB1ENR_D					0x00000008
-#define RCC_AHB1ENR_E					0x00000010
-#define RCC_AHB1ENR_F					0x00000020
+#define RCC_AHB1ENR_A         0x00000001
+#define RCC_AHB1ENR_B         0x00000002
+#define RCC_AHB1ENR_C         0x00000004
+#define RCC_AHB1ENR_D         0x00000008
+#define RCC_AHB1ENR_E         0x00000010
+#define RCC_AHB1ENR_F         0x00000020
 
 static void init(void)
 {

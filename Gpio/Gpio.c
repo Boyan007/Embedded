@@ -180,14 +180,12 @@ static void GetGpioReg(uint32_t* regValue, gpioPorts port)
 */
 static void ResetGPIO( GpioStructure* gpio, uint32_t reg_gpio, uint32_t pin)
 {
-
 	ResetGpioMode(reg_gpio, pin, gpio->mode);
 	ResetGpioOType(reg_gpio, pin, gpio->outputType);
 	ResetGpioSpeed(reg_gpio, pin, gpio->speed);
 	ResetGpioPuPd(reg_gpio, pin, gpio->pullUpPullDown);
 	ResetGpioLock(reg_gpio, pin, gpio->lock); // this was also not tested in any way, dunno how to test it
 	ResetGpioAF(reg_gpio, pin, gpio->AF); // this was not tested, needs to be tested maybe with UART
-
 }
 
 /* Function for setting pin output to 1
@@ -246,5 +244,4 @@ void SetUpGPIO(GpioStructure* gpio, gpioPorts port)
 	SetGpioPuPd(reg_gpio, pin, gpio->pullUpPullDown);
 	SetGpioLock(reg_gpio, pin, gpio->lock); // this was also not tested in any way, dunno how to test it
 	SetGpioAF(reg_gpio, pin, gpio->AF); // this was not tested, needs to be tested maybe with UART
-
 }
